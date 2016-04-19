@@ -7,6 +7,6 @@ if (file_exists($pathPage)) {
 }
 
 
-/* master */
+/* master 2 */
 
 ?>

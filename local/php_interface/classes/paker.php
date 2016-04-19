@@ -1,16 +1,25 @@
-<?
+<?php
+/**
+ * Author: Vadim Belyaev
+ * Date: 19.04.2016 11:19
+ * http://magwai.ru
+ */
+
 namespace Editor;
 
-class Page
+class Paker
 {
 
-	public static $levelMax = 1;
+	public static $validCode = true;
+
 
 	public static function OnPageStart()
 	{
 		$path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'index.php';
 		$code = file_get_contents($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'index.php');
-		echo self::getCode($code, $path, (isset($_REQUEST['level'])) ? $_REQUEST['level'] : self::$levelMax);
+
+		$codePaker = self::getCode($code, $path, (isset($_REQUEST['level'])) ? $_REQUEST['level'] : self::$levelMax);
+		echo $codePaker;
 	}
 
 	public static function getCode($code, $path, $levelMax, $levelCurrent = 1) {
@@ -29,10 +38,15 @@ class Page
 
 				//\Bitrix\Main\Diag\Debug::dump(array($absolutePath));
 
-				\Bitrix\Main\Diag\Debug::dump(array($absolutePath.$relativePath));
+				//\Bitrix\Main\Diag\Debug::dump(array($absolutePath.$relativePath));
 
 				$code = file_get_contents($absolutePath . $relativePath);
 				$path = $absolutePath . $relativePath;
+
+
+				if ($levelCurrent >= ($levelMax - 1) && self::$validCode) {
+					$code = self::validCode($code, $path);
+				}
 
 				$code = self::trimPHPTag($code);
 
@@ -68,4 +82,10 @@ class Page
 		return preg_replace('/^(<\?(php)?+)?+(.*)(\?>)?+$/iUs', "$3", $code);
 	}
 
+	public static function validCode($code, $path) {
+		return str_replace('dirname(__FILE__)', '"' . dirname($path) . '"', $code);
+	}
+
 }
+ 
+ 

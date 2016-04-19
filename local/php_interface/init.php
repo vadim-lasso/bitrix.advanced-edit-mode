@@ -6,6 +6,8 @@ if (file_exists($pathPage)) {
 	require_once $pathPage;
 }
 
+/* buffer 2 */
+
 
 /* master 2 */
 

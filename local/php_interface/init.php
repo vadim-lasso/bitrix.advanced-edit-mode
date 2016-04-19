@@ -6,6 +6,5 @@ if (file_exists($pathPage)) {
 	require_once $pathPage;
 }
 
-/* master 4 */
 
 ?>
